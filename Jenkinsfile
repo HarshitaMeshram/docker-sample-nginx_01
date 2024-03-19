@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     def app = docker.build("harshitameshram/qa:latest")
-                    docker.withRegistry( 'https://registry.hub.docker.com/harshitameshram/qa', 'DOCKER-CRED-QA') {
+                    docker.withRegistry('https://registry.hub.docker.com/harshitameshram/qa', 'DOCKER-CRED-QA') {
                         app.push('harshitameshram/qa:latest')
                     }
                 }
