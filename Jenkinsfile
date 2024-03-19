@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     def app = docker.build("harshitameshram/dev:latest")
-                    docker.withRegistry('https://registry.hub.docker.com/harshitameshram/dev', 'Docker-Hub-Cred-Dev') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'Docker-Hub-Cred-Dev') {
                         app.push()
                     }
                 }
@@ -21,17 +21,17 @@ pipeline {
             steps {
                 script {
                     def app = docker.build("harshitameshram/qa:latest")
-                    docker.withRegistry('https://registry.hub.docker.com/harshitameshram/qa', 'DOCKER-CRED-QA') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER-CRED-QA') {
                         app.push()
                     }
                 }
             }
         }
+    }
     post {
         always {
             echo 'Cleaning up...'
             deleteDir()
         }
-    }
     }
 }
