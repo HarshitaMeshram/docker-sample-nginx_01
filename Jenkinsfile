@@ -2,6 +2,9 @@ pipeline {
     agent any
     stages {
         stage('Build Docker Image for DEV') {
+            when {
+                branch 'dev'
+            }            
             steps {
                 script {
                     def app = docker.build("harshitameshram/dev:latest")
@@ -12,6 +15,9 @@ pipeline {
             }
         }
         stage('Build Docker Image for QA') {
+            when {
+                branch 'qa'
+            }            
             steps {
                 script {
                     def app = docker.build("harshitameshram/qa:latest")
