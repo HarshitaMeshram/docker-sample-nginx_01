@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_HUB_CRED_DEV = credentials('Docker-Hub-Cred-Dev')
-        DOCKER_HUB_CRED_QA = credentials('DOCKER-CRED-QA')
-    }
     stages {
         stage('Build Docker Image for DEV') {
             when {
@@ -11,8 +7,10 @@ pipeline {
             }            
             steps {
                 script {
-                    def dockerImage = docker.build("harshitameshram/dev:latest")
-                    dockerImage.push()
+                    def app = docker.build("harshitameshram/dev:latest")
+                    docker.withRegistry('https://registry.hub.docker.com/harshitameshram/dev', 'DOCKER-HUB-CRED') {
+                        app.push()
+                    }
                 }
             }
         }
@@ -22,16 +20,18 @@ pipeline {
             }            
             steps {
                 script {
-                    def dockerImage = docker.build("harshitameshram/qa:latest")
-                    dockerImage.push()
+                    def app = docker.build("harshitameshram/qa:latest")
+                    docker.withRegistry('https://registry.hub.docker.com/harshitameshram/qa', 'DOCKER-HUB-CRED') {
+                        app.push()
+                    }
                 }
             }
         }
-    }
     post {
         always {
             echo 'Cleaning up...'
             deleteDir()
         }
+    }
     }
 }
